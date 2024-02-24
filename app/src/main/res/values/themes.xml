@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.KLory" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.KLory.NoActionBar" parent="android:Theme.Material.NoActionBar" />
+
+    <style name="Theme.KLory.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_screen_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/kloryicon</item>
+        <item name="postSplashScreenTheme">@style/Theme.KLory.NoActionBar</item>
+    </style>
+
 </resources>
