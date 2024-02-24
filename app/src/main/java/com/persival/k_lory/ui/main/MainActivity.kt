@@ -1,4 +1,4 @@
-package com.persival.k_lory
+package com.persival.k_lory.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
