@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,14 +18,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.persival.k_lory.R
+import com.persival.k_lory.ui.main.MainViewModel
 
 @Composable
-fun AppContent(modifier: Modifier = Modifier) {
+fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
     Column(modifier = modifier.fillMaxSize()) {
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = viewModel.searchIngredient,
+            onValueChange = { viewModel.updateTextFieldValue(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { /* Define your action here */ }),
             label = { Text(text = stringResource(id = R.string.research_of_ingredient)) },
