@@ -35,7 +35,6 @@ class MainViewModel @Inject constructor(
             apiState = ApiUIState.Loading
             try {
                 val result = FoodAPI.service.searchProducts(searchIngredient, "product_name,brands,nutriments,image_url")
-                // Loguer le résultat ici
                 Log.d("MainViewModel", "Réponse de l'API: $result")
 
                 apiState = ApiUIState.Success(forecast = result)
@@ -47,12 +46,6 @@ class MainViewModel @Inject constructor(
                 Log.e("MainViewModel", "HttpException lors de l'appel API: ${http.message}")
             }
         }
-    }
-
-    fun convertDatas(string: String): SearchResult {
-        val gson = Gson()
-        val type = object : TypeToken<SearchResult>() {}.type
-        return gson.fromJson(string, type)
     }
 
 }
