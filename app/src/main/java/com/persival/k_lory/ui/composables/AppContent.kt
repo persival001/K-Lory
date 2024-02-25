@@ -1,5 +1,6 @@
 package com.persival.k_lory.ui.composables
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             onValueChange = { viewModel.updateTextFieldValue(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                viewModel.launchAPI()
+                viewModel.getProducts()
                 manager.clearFocus()
             }),
             label = { Text(text = stringResource(id = R.string.research_of_ingredient)) },
@@ -40,7 +41,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 .padding(8.dp),
             trailingIcon = {
                 IconButton(onClick = {
-                    viewModel.launchAPI()
+                    viewModel.getProducts()
                     manager.clearFocus()
                 }) {
                     Icon(

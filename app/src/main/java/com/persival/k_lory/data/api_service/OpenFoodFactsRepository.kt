@@ -9,15 +9,15 @@ private val baseUrl = "https://fr.openfoodfacts.org/"
 // Retrofit params
 private var scalarsConverterFactory = ScalarsConverterFactory.create()
 
-// Retrofit construction
-private val retrofit = Retrofit
-    .Builder()
-    .addConverterFactory(scalarsConverterFactory)
-    .baseUrl(baseUrl)
-    .build()
+object RetrofitInstance {
+    private val retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(scalarsConverterFactory)
+            .build()
+    }
 
-object OpenFoodFactsAPI {
-    val service: OpenFoodFactsApi by lazy {
+    val api: OpenFoodFactsApi by lazy {
         retrofit.create(OpenFoodFactsApi::class.java)
     }
 }
