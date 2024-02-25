@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
         searchIngredient = text
     }
 
-    fun launchAPI(url: String) {
+    fun launchAPI() {
 
     }
 }

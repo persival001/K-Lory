@@ -66,6 +66,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // NavController
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
     // Download picture
     implementation("io.coil-kt:coil-compose:2.4.0")
 
@@ -85,6 +88,7 @@ dependencies {
     // region Hilt x Worker https://developer.android.com/training/dependency-injection/hilt-jetpack#workmanager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-work:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
     // endregion
 
