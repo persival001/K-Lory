@@ -32,7 +32,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             onValueChange = { viewModel.updateTextFieldValue(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                viewModel.getProducts()
+                viewModel.launchAPI()
                 manager.clearFocus()
             }),
             label = { Text(text = stringResource(id = R.string.research_of_ingredient)) },
@@ -41,7 +41,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 .padding(8.dp),
             trailingIcon = {
                 IconButton(onClick = {
-                    viewModel.getProducts()
+                    viewModel.launchAPI()
                     manager.clearFocus()
                 }) {
                     Icon(

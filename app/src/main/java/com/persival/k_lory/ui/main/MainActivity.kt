@@ -23,12 +23,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            viewModel.getProducts().collect { state ->
-                Log.d("APIResponse", "Réponse reçue: ${state.data}")
-            }
-        }
-
         setContent {
             KLoryTheme {
                 Surface(
