@@ -6,10 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.persival.k_lory.data.api_service.FoodAPI
-import com.persival.k_lory.data.api_service.model.SearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -34,7 +31,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             apiState = ApiUIState.Loading
             try {
-                val result = FoodAPI.service.searchProducts(searchIngredient, "product_name,brands,nutriments,image_url")
+                val result =
+                    FoodAPI.service.searchProducts(searchIngredient, "product_name,brands,nutriments,image_url")
                 Log.d("MainViewModel", "Réponse de l'API: $result")
 
                 apiState = ApiUIState.Success(forecast = result)
