@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.persival.k_lory.data.api_service.OpenFoodFactsApi
-import com.persival.k_lory.domain.api.GetFoodPropertiesUseCase
+import com.persival.k_lory.domain.food_facts.FoodWrapper
+import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
     var searchIngredient: String by mutableStateOf("")
 
     // Call API State
-    var apiState: ApiUIState by mutableStateOf(ApiUIState.Loading)
+    private var apiState: FoodWrapper by mutableStateOf(FoodWrapper.Loading)
 
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
@@ -29,25 +29,27 @@ class MainViewModel @Inject constructor(
 
     fun launchAPI() {
         viewModelScope.launch {
-            apiState = ApiUIState.Loading
+            apiState = FoodWrapper.Loading
             try {
                 val filteredResults = getFoodPropertiesUseCase.invoke(searchIngredient)
                 if (filteredResults.isNullOrEmpty()) {
                     Log.d("FilteredResult", "Aucun produit correspondant à $searchIngredient trouvé.")
-                    apiState = ApiUIState.Error("Aucun produit trouvé")
+                    apiState = FoodWrapper.Error("Aucun produit trouvé")
                 } else {
-                    apiState = ApiUIState.Success(filteredResults)
+                    apiState = FoodWrapper.Success(filteredResults)
                     filteredResults.forEach { product ->
-                        Log.d("FilteredResult", "Produit trouvé: ${product.productName ?: "Inconnu"}, Marque: ${product.brands ?: "Inconnue"}, Nutriments: " +
-                                "${product.carbohydrates100g ?: "Non spécifiés"}, Image: ${product.imageUrl ?: "Pas d'image"}")
+                        Log.d(
+                            "FilteredResult",
+                            "Produit trouvé: ${product.productName ?: "Inconnu"}, Marque: ${product.brands ?: "Inconnue"}, Nutriments: " +
+                                    "${product.carbohydrates100g ?: "Non spécifiés"}, Image: ${product.imageUrl ?: "Pas d'image"}"
+                        )
                     }
                 }
             } catch (exception: Exception) {
-                apiState = ApiUIState.Error(exception.message ?: "Erreur inconnue")
+                apiState = FoodWrapper.Error(exception.message ?: "Erreur inconnue")
                 Log.e("MainViewModel", "Exception lors de l'appel API: ${exception.message}")
             }
         }
     }
-
 
 }

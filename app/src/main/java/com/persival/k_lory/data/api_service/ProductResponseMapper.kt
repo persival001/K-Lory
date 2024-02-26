@@ -1,7 +1,7 @@
 package com.persival.k_lory.data.api_service
 
 import com.persival.k_lory.data.api_service.model.Product
-import com.persival.k_lory.domain.api.model.FoodPropertiesEntity
+import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import javax.inject.Inject
 
 class ProductResponseMapper @Inject constructor() {

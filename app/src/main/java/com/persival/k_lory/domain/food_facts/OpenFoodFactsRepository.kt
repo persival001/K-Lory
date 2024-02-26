@@ -1,6 +1,6 @@
-package com.persival.k_lory.domain.api
+package com.persival.k_lory.domain.food_facts
 
-import com.persival.k_lory.domain.api.model.FoodPropertiesEntity
+import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 
 interface OpenFoodFactsRepository {
 

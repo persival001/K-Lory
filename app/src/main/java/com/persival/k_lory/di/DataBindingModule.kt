@@ -1,7 +1,7 @@
 package com.persival.k_lory.di
 
 import com.persival.k_lory.data.api_service.OpenFoodFactsRepositoryImpl
-import com.persival.k_lory.domain.api.OpenFoodFactsRepository
+import com.persival.k_lory.domain.food_facts.OpenFoodFactsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

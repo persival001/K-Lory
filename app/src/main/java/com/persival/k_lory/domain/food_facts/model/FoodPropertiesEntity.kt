@@ -1,4 +1,4 @@
-package com.persival.k_lory.domain.api.model
+package com.persival.k_lory.domain.food_facts.model
 
 data class FoodPropertiesEntity(
     val productName: String?,
