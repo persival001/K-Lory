@@ -2,8 +2,9 @@ package com.persival.k_lory.data.api_service
 
 import com.persival.k_lory.data.api_service.model.Product
 import com.persival.k_lory.domain.api.model.FoodPropertiesEntity
+import javax.inject.Inject
 
-class ProductResponseMapper {
+class ProductResponseMapper @Inject constructor() {
     fun toFoodPropertiesEntity(productResponse: Product): FoodPropertiesEntity {
         return FoodPropertiesEntity(
             productName = productResponse.product_name,

@@ -1,8 +1,10 @@
 package com.persival.k_lory.data.api_service
 
+import android.util.Log
 import com.persival.k_lory.domain.api.OpenFoodFactsRepository
 import com.persival.k_lory.domain.api.model.FoodPropertiesEntity
 import com.persival.k_lory.domain.utils.CoroutineDispatchers
+import com.persival.k_lory.ui.main.ApiUIState
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +26,7 @@ class OpenFoodFactsRepositoryImpl @Inject constructor(
                 productResponseMapper.toFoodPropertiesEntity(productResponse)
             }
         } catch (e: Exception) {
-            // Gestion des exceptions ou log
+            Log.e("Retrofit", "Exception during API call: ${e.message}")
             null
         }
     }
