@@ -1,4 +1,4 @@
-# K-Lory : Votre Compagnon de Nutrition
+# K-Lory : Votre Compagnon de Nutrition (En cours de développement)
 
 ## À propos
 K-Lory est une application mobile conçue pour vous aider à mieux comprendre la composition nutritionnelle de vos aliments préférés. 
