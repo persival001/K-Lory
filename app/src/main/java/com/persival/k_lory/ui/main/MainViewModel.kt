@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
+import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class MainViewModel @Inject constructor(
     // Call API State
     private var apiState: FoodWrapper by mutableStateOf(FoodWrapper.Loading)
 
+    var products = mutableStateOf(listOf<FoodPropertiesEntity>())
+        private set
+
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
     }
@@ -36,6 +40,8 @@ class MainViewModel @Inject constructor(
                     Log.d("FilteredResult", "Aucun produit correspondant à $searchIngredient trouvé.")
                     apiState = FoodWrapper.Error("Aucun produit trouvé")
                 } else {
+                    // Mettez à jour la liste des produits pour l'affichage
+                    products.value = filteredResults
                     apiState = FoodWrapper.Success(filteredResults)
                     filteredResults.forEach { product ->
                         Log.d(
@@ -51,5 +57,6 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
 
 }
