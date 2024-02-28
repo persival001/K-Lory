@@ -1,5 +1,7 @@
-package com.persival.k_lory.data.api_service
+package com.persival.k_lory.data.food_facts
 
+import android.app.appsearch.SearchResult
+import com.persival.k_lory.data.food_facts.model.FoodFactsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -8,5 +10,5 @@ interface OpenFoodFactsApi {
     suspend fun searchProducts(
         @Query("search_terms") searchTerm: String,
         @Query("fields") fields: String
-    ): SearchResult
+    ): FoodFactsResponse
 }

@@ -78,21 +78,24 @@ dependencies {
     // Download picture
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Json
+    // Gson
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    // Interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    ksp("com.google.dagger:hilt-compiler:2.48.1")
+    implementation("com.google.dagger:hilt-android:2.50")
+    ksp("com.google.dagger:hilt-compiler:2.50")
     // region Hilt x Worker https://developer.android.com/training/dependency-injection/hilt-jetpack#workmanager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-work:1.2.0")

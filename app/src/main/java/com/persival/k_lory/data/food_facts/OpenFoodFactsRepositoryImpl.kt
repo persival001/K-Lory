@@ -1,8 +1,6 @@
-package com.persival.k_lory.data.api_service
+package com.persival.k_lory.data.food_facts
 
 import android.util.Log
-import com.persival.k_lory.data.food_facts.OpenFoodFactsApi
-import com.persival.k_lory.data.food_facts.ProductResponseMapper
 import com.persival.k_lory.data.food_facts.model.FoodFactsResponse
 import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.OpenFoodFactsRepository
