@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
-import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,45 +17,41 @@ class MainViewModel @Inject constructor(
     private val getFoodPropertiesUseCase: GetFoodPropertiesUseCase,
 ) : ViewModel() {
 
-    // TextField state
     var searchIngredient: String by mutableStateOf("")
-
-    // Call API State
-    private var apiState: FoodWrapper by mutableStateOf(FoodWrapper.Loading)
-
-    var products = mutableStateOf(listOf<FoodPropertiesEntity>())
-        private set
 
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
     }
 
-    fun launchAPI() {
+    fun launchAPI() {  // TODO Persival: bon bien sûr, LD ou Flow, il vaut mieux que ça soit observé dans la vue
         viewModelScope.launch {
-            apiState = FoodWrapper.Loading
-            try {
-                val filteredResults = getFoodPropertiesUseCase.invoke(searchIngredient)
-                if (filteredResults.isNullOrEmpty()) {
-                    Log.d("FilteredResult", "Aucun produit correspondant à $searchIngredient trouvé.")
-                    apiState = FoodWrapper.Error("Aucun produit trouvé")
-                } else {
-                    // Mettez à jour la liste des produits pour l'affichage
-                    products.value = filteredResults
-                    apiState = FoodWrapper.Success(filteredResults)
-                    filteredResults.forEach { product ->
-                        Log.d(
-                            "FilteredResult",
-                            "Produit trouvé: ${product.productName ?: "Inconnu"}, Marque: ${product.brands ?: "Inconnue"}, Nutriments: " +
-                                    "${product.carbohydrates100g ?: "Non spécifiés"}, Image: ${product.imageUrl ?: "Pas d'image"}"
-                        )
+            when (val foodWrapper =
+                getFoodPropertiesUseCase.invoke(searchIngredient)) {
+                // TODO Persival: tu récup ton wrapper, puis tu traites au cas par cas selon ce qui t'est retourné
+                is FoodWrapper.Success -> {
+                    foodWrapper.foodProperties.forEach { product ->
+                        if (product.productName == searchIngredient) {
+                            Log.d(
+                                "FilteredResult",
+                                "Produit trouvé: ${product.productName ?: "Inconnu"}, Marque: ${product.brand ?: "Inconnue"}, Nutriments: " +
+                                        "${product.carbohydrates100g ?: "Non spécifiés"}, Image: ${product.imageUrl ?: "Pas d'image"}"
+                            )
+                        }
                     }
                 }
-            } catch (exception: Exception) {
-                apiState = FoodWrapper.Error(exception.message ?: "Erreur inconnue")
-                Log.e("MainViewModel", "Exception lors de l'appel API: ${exception.message}")
+
+                is FoodWrapper.NoResults -> {
+                    // Empty view
+                    Log.d("FilteredResult", "Aucun produit correspondant à $searchIngredient trouvé.")
+                }
+
+                is FoodWrapper.Error -> {
+                    // Error state view
+                    Log.e("MainViewModel", "Exception lors de l'appel API: ${foodWrapper.message}")
+                }
+
+                FoodWrapper.Loading -> {} // TODO Persival: ptet un loading state ou quoi
             }
         }
     }
-
-
 }
