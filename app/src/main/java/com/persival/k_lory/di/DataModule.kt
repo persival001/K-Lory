@@ -41,7 +41,7 @@ class DataModule {
         @OpenFoodFactsOkHttpClient okHttpClient: OkHttpClient,
         gson: Gson
     ): Retrofit = Retrofit.Builder()
-        .baseUrl("https://world.openfoodfacts.org/")
+        .baseUrl("https://api.nal.usda.gov/fdc/v1/foods/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
