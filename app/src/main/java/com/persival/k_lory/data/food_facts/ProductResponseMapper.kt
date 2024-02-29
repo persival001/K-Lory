@@ -1,6 +1,5 @@
 package com.persival.k_lory.data.food_facts
 
-import com.persival.k_lory.data.food_facts.model.FoodFactsResponse
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import javax.inject.Inject
 

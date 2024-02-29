@@ -1,6 +1,6 @@
 package com.persival.k_lory.di
 
-import com.persival.k_lory.data.food_facts.OpenFoodFactsRepositoryImpl
+import com.persival.k_lory.data.food_facts.FoodCentralRepositoryImpl
 import com.persival.k_lory.domain.food_facts.OpenFoodFactsRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +14,5 @@ abstract class DataBindingModule {
 
     @Singleton
     @Binds
-    abstract fun bindOpenFoodFactsRepository(impl: OpenFoodFactsRepositoryImpl): OpenFoodFactsRepository
+    abstract fun bindOpenFoodFactsRepository(impl: FoodCentralRepositoryImpl): OpenFoodFactsRepository
 }
