@@ -31,7 +31,7 @@ class FoodDataCentralRepositoryImpl @Inject constructor(
 
             if (searchResponse.isSuccessful) {
                 val responseBody = searchResponse.body()
-
+                Log.e("Retrofit", "RESPONSE SUCCESSFUL")
                 if (responseBody != null && !responseBody.foods.isNullOrEmpty()) {
                     val result: List<FoodPropertiesEntity> =
                         productResponseMapper.toFoodPropertiesEntities(responseBody)

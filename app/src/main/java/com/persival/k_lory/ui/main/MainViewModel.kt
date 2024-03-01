@@ -1,13 +1,14 @@
 package com.persival.k_lory.ui.main
 
-import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
+import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,38 +19,32 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     var searchIngredient: String by mutableStateOf("")
+    var products = mutableStateListOf<FoodPropertiesEntity>()
+        private set
 
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
     }
 
-    fun launchAPI() {  // TODO Persival: bon bien sûr, LD ou Flow, il vaut mieux que ça soit observé dans la vue
+    fun launchAPI() {
         viewModelScope.launch {
-            when (val foodWrapper =
-                getFoodPropertiesUseCase.invoke(searchIngredient)) {
-                // TODO Persival: tu récup ton wrapper, puis tu traites au cas par cas selon ce qui t'est retourné
+            when (val foodWrapper = getFoodPropertiesUseCase.invoke(searchIngredient)) {
                 is FoodWrapper.Success -> {
-                    foodWrapper.foodProperties.forEach { product ->
-                        if (product.description == searchIngredient) {
-                            Log.d(
-                                "FilteredResult",
-                                "Produit trouvé: ${product.description}"
-                            )
-                        }
-                    }
+                    products.clear()
+                    products.addAll(foodWrapper.foodProperties.filter { it.description == searchIngredient })
                 }
 
                 is FoodWrapper.NoResults -> {
-                    // Empty view
-                    Log.d("FilteredResult", "Aucun produit correspondant à $searchIngredient trouvé.")
+                    products.clear()
                 }
 
                 is FoodWrapper.Error -> {
-                    // Error state view
-                    Log.e("MainViewModel", "Exception lors de l'appel API: ${foodWrapper.message}")
+                    // Gérer l'erreur
                 }
 
-                FoodWrapper.Loading -> {} // TODO Persival: ptet un loading state ou quoi
+                FoodWrapper.Loading -> {
+                    // Gérer l'état de chargement
+                }
             }
         }
     }
