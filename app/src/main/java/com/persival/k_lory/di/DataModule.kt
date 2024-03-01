@@ -2,7 +2,7 @@ package com.persival.k_lory.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.persival.k_lory.data.food_facts.OpenFoodFactsApi
+import com.persival.k_lory.data.food_facts.FoodDataCentralApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,13 +31,13 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideOpenFoodFactApi(@OpenFoodFactsRetrofit retrofit: Retrofit): OpenFoodFactsApi =
-        retrofit.create(OpenFoodFactsApi::class.java)
+    fun provideFoodDataCentralApi(@OpenFoodFactsRetrofit retrofit: Retrofit): FoodDataCentralApi =
+        retrofit.create(FoodDataCentralApi::class.java)
 
     @Provides
     @Singleton
     @OpenFoodFactsRetrofit
-    fun provideOpenFoodFactsRetrofit(
+    fun provideFoodDataCentralRetrofit(
         @OpenFoodFactsOkHttpClient okHttpClient: OkHttpClient,
         gson: Gson
     ): Retrofit = Retrofit.Builder()
@@ -49,7 +49,7 @@ class DataModule {
     @Provides
     @Singleton
     @OpenFoodFactsOkHttpClient
-    fun provideOpenFoodFactsOkHttpClient(
+    fun provideFoodDataCentralOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)

@@ -9,6 +9,6 @@ interface FoodDataCentralApi {
     @GET("foods/search")
     suspend fun searchFoods(
         @Query("query") searchTerm: String,
-        @Query("api_key") apiKey: String = "VotreCléAPI",
+        @Query("api_key") apiKey: String,
     ): Response<FoodSearchResponse>
 }

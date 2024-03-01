@@ -1,25 +1,21 @@
 package com.persival.k_lory.data.food_facts
 
+import com.persival.k_lory.data.food_facts.model.FoodSearchResponse
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import javax.inject.Inject
 
 class ProductResponseMapper @Inject constructor() {
-    fun toFoodPropertiesEntities(productResponses: FoodFactsResponse): List<FoodPropertiesEntity> =
-        if (!productResponses.products.isNullOrEmpty()) {
-            productResponses.products.map {productsItem ->
-                if (productsItem == null) return emptyList()
-                else
+    fun toFoodPropertiesEntities(productResponses: FoodSearchResponse): List<FoodPropertiesEntity> =
+        productResponses.foods?.mapNotNull { productItem ->
+            productItem?.let {
                 FoodPropertiesEntity(
-                    productName = productsItem.productName ?: "",
-                    brand = productsItem.code,
-                    imageUrl = productsItem.imageUrl ?: "",
-                    nutriments = productsItem.nutriments,
-                    //TODO Persival : bon le mapping est cassé pcq l'API n'est pas la bonne pour tes besoins, mais pense à bien null check
-                    // tout peut arriver qd on récup des données d'une API
-
-
+                    description = it.description ?: "",
+                    ingredients = it.ingredients ?: "",
+                    servingSizeUnit = it.servingSizeUnit ?: "",
+                    servingSize = it.servingSize as? Double ?: 0.0,
+                    foodNutrients = it.foodNutrients ?: listOf()
                 )
-            } else emptyList()
-        }
+            }
+        } ?: emptyList()
 }
 

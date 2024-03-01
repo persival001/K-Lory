@@ -17,15 +17,7 @@ import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 fun ProductCard(product: FoodPropertiesEntity) {
     Card(modifier = Modifier.padding(8.dp)) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = rememberAsyncImagePainter(model = product.imageUrl),
-                contentDescription = "Product Image",
-                modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth()
-            )
-            Text(text = "Nom: ${product.productName}")
-            Text(text = "Marque: ${product.brands}")
+            Text(text = "Nom: ${product.description}")
         }
     }
 }

@@ -30,11 +30,10 @@ class MainViewModel @Inject constructor(
                 // TODO Persival: tu récup ton wrapper, puis tu traites au cas par cas selon ce qui t'est retourné
                 is FoodWrapper.Success -> {
                     foodWrapper.foodProperties.forEach { product ->
-                        if (product.productName == searchIngredient) {
+                        if (product.description == searchIngredient) {
                             Log.d(
                                 "FilteredResult",
-                                "Produit trouvé: ${product.productName ?: "Inconnu"}, Marque: ${product.brand ?: "Inconnue"}, Nutriments: " +
-                                        "${product.carbohydrates100g ?: "Non spécifiés"}, Image: ${product.imageUrl ?: "Pas d'image"}"
+                                "Produit trouvé: ${product.description}"
                             )
                         }
                     }

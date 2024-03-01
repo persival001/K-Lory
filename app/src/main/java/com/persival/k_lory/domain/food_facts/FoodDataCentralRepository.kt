@@ -1,6 +1,6 @@
 package com.persival.k_lory.domain.food_facts
 
-interface OpenFoodFactsRepository {
+interface FoodDataCentralRepository {
 
     suspend fun searchProducts(searchTerm: String): FoodWrapper
 }
