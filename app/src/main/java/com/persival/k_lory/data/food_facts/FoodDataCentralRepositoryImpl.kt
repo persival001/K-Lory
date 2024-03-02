@@ -1,10 +1,8 @@
 package com.persival.k_lory.data.food_facts
 
-import android.util.Log
 import com.persival.k_lory.BuildConfig
 import com.persival.k_lory.domain.food_facts.FoodDataCentralRepository
 import com.persival.k_lory.domain.food_facts.FoodWrapper
-import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import com.persival.k_lory.domain.utils.CoroutineDispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,35 +21,35 @@ class FoodDataCentralRepositoryImpl @Inject constructor(
     private val _foodWrapperStateFlow = MutableStateFlow<FoodWrapper>(FoodWrapper.Loading)
     val foodWrapperStateFlow: StateFlow<FoodWrapper> = _foodWrapperStateFlow
 
-    override suspend fun searchProducts(searchTerm: String): FoodWrapper = withContext(coroutineDispatchers.io) {
+    override suspend fun searchProducts(searchTerm: String) = withContext(coroutineDispatchers.io) {
         _foodWrapperStateFlow.value = FoodWrapper.Loading
 
-        try {
-            val searchResponse = foodDataCentralApi.searchFoods(searchTerm, BuildConfig.API_KEY)
+        val response = try {
+            foodDataCentralApi.searchFoods(searchTerm, BuildConfig.API_KEY)
+        } catch (e: Exception) {
+            _foodWrapperStateFlow.value = FoodWrapper.Error(e.message ?: "Unknown error")
+            return@withContext
+        }
 
-            if (searchResponse.isSuccessful) {
-                val responseBody = searchResponse.body()
-                Log.e("Retrofit", "RESPONSE SUCCESSFUL")
-                if (responseBody != null && !responseBody.foods.isNullOrEmpty()) {
-                    val result: List<FoodPropertiesEntity> =
-                        productResponseMapper.toFoodPropertiesEntities(responseBody)
-
-                    return@withContext if (result.isEmpty()) {
-                        FoodWrapper.NoResults
-                    } else {
-                        FoodWrapper.Success(result)
-                    }
+        if (response.isSuccessful) {
+            val responseBody = response.body()
+            if (responseBody != null && !responseBody.foods.isNullOrEmpty()) {
+                val result = productResponseMapper.toFoodPropertiesEntities(responseBody)
+                _foodWrapperStateFlow.value = if (result.isEmpty()) {
+                    FoodWrapper.NoResults
                 } else {
-                    return@withContext FoodWrapper.NoResults
+                    FoodWrapper.Success(result)
                 }
             } else {
-                Log.e("Retrofit", "API call failed with response code: ${searchResponse.code()}")
-                return@withContext FoodWrapper.Error("API call failed with response code: ${searchResponse.code()}")
+                _foodWrapperStateFlow.value = FoodWrapper.NoResults
             }
-        } catch (e: Exception) {
-            Log.e("Retrofit", "Exception during API call: ${e.message}")
-            return@withContext FoodWrapper.Error(e.message ?: "Unknown error")
+        } else {
+            _foodWrapperStateFlow.value = FoodWrapper.Error("API call failed with response code: ${response.code()}")
         }
+    }
+
+    override fun getApiResponseFlow(): StateFlow<FoodWrapper> {
+        return foodWrapperStateFlow
     }
 
 }

@@ -4,5 +4,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface FoodDataCentralRepository {
 
-    suspend fun searchProducts(searchTerm: String): FoodWrapper
+    fun getApiResponseFlow(): StateFlow<FoodWrapper>
+
+    suspend fun searchProducts(searchTerm: String)
 }

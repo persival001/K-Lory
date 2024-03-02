@@ -34,10 +34,6 @@ class MainViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    fun updateTextFieldValue(text: String) {
-        searchIngredient = text
-    }
-
     fun launchAPI() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -50,7 +46,8 @@ class MainViewModel @Inject constructor(
                     products.addAll(filteredProducts)
 
                     if (filteredProducts.any { it.description.isNullOrEmpty() }) {
-                        _toastMessage.value = resourceProvider.getString(R.string.search_no_results_for, searchIngredient)
+                        _toastMessage.value =
+                            resourceProvider.getString(R.string.search_no_results_for, searchIngredient)
                     }
                 }
 
@@ -69,6 +66,10 @@ class MainViewModel @Inject constructor(
             }
             _isLoading.value = false
         }
+    }
+
+    fun updateTextFieldValue(text: String) {
+        searchIngredient = text
     }
 
     fun toastShown() {
