@@ -1,11 +1,15 @@
 package com.persival.k_lory.di
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.persival.k_lory.data.food_facts.FoodDataCentralApi
+import com.persival.k_lory.ui.utils.ResourceProvider
+import com.persival.k_lory.ui.utils.ResourceProviderImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,6 +22,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(@ApplicationContext context: Context): ResourceProvider {
+        return ResourceProviderImpl(context)
+    }
 
     @Provides
     @Singleton
