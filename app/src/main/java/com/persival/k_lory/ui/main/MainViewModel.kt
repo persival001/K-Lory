@@ -51,6 +51,9 @@ class MainViewModel @Inject constructor(
                     is FoodWrapper.Error -> {
                     }
 
+                    is FoodWrapper.Init -> {
+                    }
+
                     FoodWrapper.Loading -> {
                     }
                 }
