@@ -54,7 +54,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
         // Display the list of products
         LazyColumn {
             items(viewModel.products.size) { index ->
-                ProductCard(product = viewModel.products[index])
+                ProductCard(product = viewModel.products[index], viewModel)
             }
         }
     }

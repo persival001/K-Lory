@@ -10,6 +10,9 @@ import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +25,9 @@ class MainViewModel @Inject constructor(
     var products = mutableStateListOf<FoodPropertiesEntity>()
         private set
 
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
+
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
     }
@@ -31,21 +37,32 @@ class MainViewModel @Inject constructor(
             when (val foodWrapper = getFoodPropertiesUseCase.invoke(searchIngredient)) {
                 is FoodWrapper.Success -> {
                     products.clear()
-                    products.addAll(foodWrapper.foodProperties.filter { it.description == searchIngredient })
+                    val filteredProducts = foodWrapper.foodProperties.filter { it.description == searchIngredient }
+                    products.addAll(filteredProducts)
+
+                    if (filteredProducts.any { it.description.isNullOrEmpty() }) {
+                        _toastMessage.value = "Aucun élément trouvé pour \"$searchIngredient\""
+                    }
                 }
 
                 is FoodWrapper.NoResults -> {
                     products.clear()
+                    _toastMessage.value = "Aucun élément trouvé."
                 }
 
                 is FoodWrapper.Error -> {
-                    // Gérer l'erreur
+                    // TODO : Gérer l'erreur
                 }
 
                 FoodWrapper.Loading -> {
-                    // Gérer l'état de chargement
+                    // TODO : Gérer l'état de chargement
                 }
             }
         }
     }
+
+    fun toastShown() {
+        _toastMessage.value = null
+    }
 }
+
