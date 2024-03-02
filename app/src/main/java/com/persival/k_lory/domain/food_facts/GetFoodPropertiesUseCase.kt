@@ -5,6 +5,6 @@ import javax.inject.Inject
 class GetFoodPropertiesUseCase @Inject constructor(
     private val foodDataCentralRepository: FoodDataCentralRepository
 ) {
-    suspend fun invoke(searchTerm: String): FoodWrapper =
+    suspend fun invoke(searchTerm: String) =
         foodDataCentralRepository.searchProducts(searchTerm)
 }

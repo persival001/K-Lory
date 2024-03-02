@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.persival.k_lory.R
 import com.persival.k_lory.domain.food_facts.FoodWrapper
+import com.persival.k_lory.domain.food_facts.GetApiResponseFlowUseCase
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import com.persival.k_lory.ui.utils.ResourceProvider
@@ -22,49 +22,46 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getFoodPropertiesUseCase: GetFoodPropertiesUseCase,
     private val resourceProvider: ResourceProvider,
+    getApiResponseFlowUseCase: GetApiResponseFlowUseCase,
 ) : ViewModel() {
-
-    var searchIngredient: String by mutableStateOf("")
-    var products = mutableStateListOf<FoodPropertiesEntity>()
-        private set
 
     private val _toastMessage = MutableStateFlow<String?>(null)
     val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    val apiResponseFlow: StateFlow<FoodWrapper> = getApiResponseFlowUseCase.invoke()
 
-    fun launchAPI() {
+    var searchIngredient: String by mutableStateOf("")
+
+    var products = mutableStateListOf<FoodPropertiesEntity>()
+        private set
+
+    init {
         viewModelScope.launch {
-            _isLoading.value = true
-            when (val foodWrapper = getFoodPropertiesUseCase.invoke(searchIngredient)) {
-                is FoodWrapper.Success -> {
-                    products.clear()
-                    val filteredProducts = foodWrapper.foodProperties.filter {
-                        it.description?.contains(searchIngredient, ignoreCase = true) ?: false
+            apiResponseFlow.collect { foodWrapper ->
+                when (foodWrapper) {
+                    is FoodWrapper.Success -> {
+                        products.clear()
+                        products.addAll(foodWrapper.foodProperties)
                     }
-                    products.addAll(filteredProducts)
 
-                    if (filteredProducts.any { it.description.isNullOrEmpty() }) {
-                        _toastMessage.value =
-                            resourceProvider.getString(R.string.search_no_results_for, searchIngredient)
+                    is FoodWrapper.NoResults -> {
+                        products.clear()
                     }
-                }
 
-                is FoodWrapper.NoResults -> {
-                    products.clear()
-                    _toastMessage.value = resourceProvider.getString(R.string.search_no_results)
-                }
+                    is FoodWrapper.Error -> {
+                    }
 
-                is FoodWrapper.Error -> {
-                    // TODO : Gérer l'erreur
-                }
-
-                FoodWrapper.Loading -> {
-                    // TODO : Gérer l'état de chargement
+                    FoodWrapper.Loading -> {
+                    }
                 }
             }
-            _isLoading.value = false
+        }
+    }
+
+    fun launchAPI() {
+        // Trigger the use case to start loading and eventually update the apiResponseFlow
+        viewModelScope.launch {
+            getFoodPropertiesUseCase.invoke(searchIngredient)
         }
     }
 
@@ -76,4 +73,3 @@ class MainViewModel @Inject constructor(
         _toastMessage.value = null
     }
 }
-

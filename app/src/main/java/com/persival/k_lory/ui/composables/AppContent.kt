@@ -25,52 +25,79 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.persival.k_lory.R
+import com.persival.k_lory.domain.food_facts.FoodWrapper
+import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import com.persival.k_lory.ui.main.MainViewModel
+
 
 @Composable
 fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val manager = LocalFocusManager.current
-    val isLoading by viewModel.isLoading.collectAsState()
+    val apiResponse by viewModel.apiResponseFlow.collectAsState()
 
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            OutlinedTextField(
-                value = viewModel.searchIngredient,
-                onValueChange = { viewModel.updateTextFieldValue(it) },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    viewModel.launchAPI()
-                    manager.clearFocus()
-                }),
-                label = { Text(text = stringResource(id = R.string.research_of_ingredient)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                trailingIcon = {
-                    IconButton(onClick = {
-                        viewModel.launchAPI()
-                        manager.clearFocus()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = null
-                        )
-                    }
+    Column(modifier = modifier.fillMaxSize()) {
+        SearchBar(
+            value = viewModel.searchIngredient,
+            onValueChange = viewModel::updateTextFieldValue
+        ) {
+            viewModel.launchAPI()
+            manager.clearFocus()
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            when (apiResponse) {
+                is FoodWrapper.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-            )
-            // Display the list of products
-            LazyColumn {
-                items(viewModel.products.size) { index ->
-                    ProductCard(product = viewModel.products[index], viewModel)
+
+                is FoodWrapper.Success -> {
+                    ProductsList(products = (apiResponse as FoodWrapper.Success).foodProperties, viewModel = viewModel)
+                }
+
+                is FoodWrapper.NoResults -> {
+                    Text("No results", modifier = Modifier.align(Alignment.Center))
+                }
+
+                is FoodWrapper.Error -> {
+                    Text(
+                        "Error : ${(apiResponse as FoodWrapper.Error).message}",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }
+    }
+}
 
-        if (isLoading) {
-            // Center the CircularProgressIndicator in the Box
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
+@Composable
+fun SearchBar(value: String, onValueChange: (String) -> Unit, onSearch: () -> Unit) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { onSearch() }),
+        label = { Text(text = stringResource(id = R.string.research_of_ingredient)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        trailingIcon = {
+            IconButton(onClick = { onSearch() }) {
+                Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            }
+        }
+    )
+}
+
+@Composable
+fun ProductsList(products: List<FoodPropertiesEntity>, viewModel: MainViewModel) {
+    LazyColumn {
+        items(products.size) { index ->
+            ProductCard(product = products[index], viewModel = viewModel)
         }
     }
 }
+

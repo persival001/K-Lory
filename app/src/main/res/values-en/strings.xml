@@ -4,4 +4,5 @@
     <string name="research_of_ingredient">Search for an ingredient</string>
     <string name="search_no_results_for">"No results for "</string>
     <string name="search_no_results">No results</string>
+    <string name="error_message">Error</string>
 </resources>
