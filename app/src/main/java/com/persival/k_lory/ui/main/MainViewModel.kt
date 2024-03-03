@@ -10,7 +10,6 @@ import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.GetApiResponseFlowUseCase
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
-import com.persival.k_lory.ui.utils.ResourceProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,42 +17,55 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// Annotates the ViewModel for dependency injection with Hilt.
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    // Injects the use case for getting food properties. Used to fetch food data based on search criteria.
     private val getFoodPropertiesUseCase: GetFoodPropertiesUseCase,
-    private val resourceProvider: ResourceProvider,
+    // Injects the use case to retrieve API response flow. Used for observing API response states.
     getApiResponseFlowUseCase: GetApiResponseFlowUseCase,
 ) : ViewModel() {
 
+    // A private mutable state flow to hold toast messages. Initially set to null.
     private val _toastMessage = MutableStateFlow<String?>(null)
+
+    // An exposed read-only version of the toast message state flow.
     val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
 
+    // Holds the API response flow, initiated by invoking the getApiResponseFlowUseCase.
     val apiResponseFlow: StateFlow<FoodWrapper> = getApiResponseFlowUseCase.invoke()
 
+    // A mutable state holding the current search ingredient entered by the user. Initially empty.
     var searchIngredient: String by mutableStateOf("")
 
-    var products = mutableStateListOf<FoodPropertiesEntity>()
-        private set
+    // A mutable state list holding the list of food properties entities. Initially empty.
+    private var products = mutableStateListOf<FoodPropertiesEntity>()
 
     init {
+        // Collects API response flow updates within the ViewModel scope.
         viewModelScope.launch {
             apiResponseFlow.collect { foodWrapper ->
                 when (foodWrapper) {
+                    // On successful API response, clears the current products list and adds new ones.
                     is FoodWrapper.Success -> {
                         products.clear()
                         products.addAll(foodWrapper.foodProperties)
                     }
 
+                    // On receiving a 'NoResults' response, clears the products list.
                     is FoodWrapper.NoResults -> {
                         products.clear()
                     }
 
+                    // Handles the 'Error' response. Currently no implementation.
                     is FoodWrapper.Error -> {
                     }
 
+                    // Handles the 'Init' state. Currently no implementation.
                     is FoodWrapper.Init -> {
                     }
 
+                    // Handles the 'Loading' state. Currently no implementation.
                     FoodWrapper.Loading -> {
                     }
                 }
@@ -61,17 +73,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    // Function to initiate the API call through the use case with the current search ingredient.
     fun launchAPI() {
-        // Trigger the use case to start loading and eventually update the apiResponseFlow
         viewModelScope.launch {
             getFoodPropertiesUseCase.invoke(searchIngredient)
         }
     }
 
+    // Updates the current search ingredient with the new text value.
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
     }
 
+    // Resets the toast message to null, indicating the toast has been shown or is no longer needed.
     fun toastShown() {
         _toastMessage.value = null
     }
