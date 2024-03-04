@@ -30,5 +30,3 @@ class ProductResponseMapper @Inject constructor() {
     private fun extractNutrientValue(nutrients: List<FoodNutrientsItem?>?, nutrientName: String): Double? =
         nutrients?.find { it?.nutrientName == nutrientName }?.value as? Double
 }
-
-

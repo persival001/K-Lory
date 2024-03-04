@@ -11,9 +11,7 @@ import com.persival.k_lory.domain.food_facts.GetApiResponseFlowUseCase
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,12 +23,6 @@ class MainViewModel @Inject constructor(
     // Injects the use case to retrieve API response flow. Used for observing API response states.
     getApiResponseFlowUseCase: GetApiResponseFlowUseCase,
 ) : ViewModel() {
-
-    // A private mutable state flow to hold toast messages. Initially set to null.
-    private val _toastMessage = MutableStateFlow<String?>(null)
-
-    // An exposed read-only version of the toast message state flow.
-    val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
 
     // Holds the API response flow, initiated by invoking the getApiResponseFlowUseCase.
     val apiResponseFlow: StateFlow<FoodWrapper> = getApiResponseFlowUseCase.invoke()
@@ -83,10 +75,5 @@ class MainViewModel @Inject constructor(
     // Updates the current search ingredient with the new text value.
     fun updateTextFieldValue(text: String) {
         searchIngredient = text
-    }
-
-    // Resets the toast message to null, indicating the toast has been shown or is no longer needed.
-    fun toastShown() {
-        _toastMessage.value = null
     }
 }

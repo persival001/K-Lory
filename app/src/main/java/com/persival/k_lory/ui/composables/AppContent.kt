@@ -32,7 +32,6 @@ import com.persival.k_lory.domain.food_facts.FoodWrapper
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import com.persival.k_lory.ui.main.MainViewModel
 
-
 @Composable
 fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val manager = LocalFocusManager.current
@@ -58,18 +57,18 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 }
 
                 is FoodWrapper.Success -> {
-                    ProductsList(products = (apiResponse as FoodWrapper.Success).foodProperties, viewModel = viewModel)
+                    ProductsList(products = (apiResponse as FoodWrapper.Success).foodProperties)
                 }
 
                 is FoodWrapper.NoResults -> {
-                    Text("No results", modifier = Modifier.align(Alignment.Center))
+                    Text(text = stringResource(id = R.string.no_results), modifier = Modifier.align(Alignment.Center))
                 }
 
                 is FoodWrapper.Init -> {
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                         Image(
                             painter = painterResource(id = R.drawable.kloryicon),
-                            contentDescription = "Logo Nourriture",
+                            contentDescription = "Food Logo",
                             modifier = Modifier.matchParentSize(),
                             contentScale = ContentScale.Crop
                         )
@@ -78,10 +77,11 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
                 is FoodWrapper.Error -> {
                     Text(
-                        "Error : ${(apiResponse as FoodWrapper.Error).message}",
+                        text = stringResource(id = R.string.no_results_check_internet),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
             }
         }
     }
@@ -107,10 +107,10 @@ fun SearchBar(value: String, onValueChange: (String) -> Unit, onSearch: () -> Un
 }
 
 @Composable
-fun ProductsList(products: List<FoodPropertiesEntity>, viewModel: MainViewModel) {
+fun ProductsList(products: List<FoodPropertiesEntity>) {
     LazyColumn {
         items(products.size) { index ->
-            ProductCard(product = products[index], viewModel = viewModel)
+            ProductCard(product = products[index])
         }
     }
 }

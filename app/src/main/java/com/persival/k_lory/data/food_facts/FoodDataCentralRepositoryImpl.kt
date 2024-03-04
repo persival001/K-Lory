@@ -19,7 +19,7 @@ class FoodDataCentralRepositoryImpl @Inject constructor(
 ) : FoodDataCentralRepository {
 
     private val _foodWrapperStateFlow = MutableStateFlow<FoodWrapper>(FoodWrapper.Init)
-    val foodWrapperStateFlow: StateFlow<FoodWrapper> = _foodWrapperStateFlow
+    private val foodWrapperStateFlow: StateFlow<FoodWrapper> = _foodWrapperStateFlow
 
     override suspend fun searchProducts(searchTerm: String) = withContext(coroutineDispatchers.io) {
         _foodWrapperStateFlow.value = FoodWrapper.Loading
