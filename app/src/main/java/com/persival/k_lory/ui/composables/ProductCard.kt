@@ -12,7 +12,6 @@ import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 
 @Composable
 fun ProductCard(product: FoodPropertiesEntity) {
-
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -21,9 +20,13 @@ fun ProductCard(product: FoodPropertiesEntity) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Text(text = "${product.description}")
-            Text(text = "Ingredients: ${product.ingredients}")
-            Text(text = "Serving size: ${product.servingSize} ${product.servingSizeUnit}")
+            Text(text = product.description ?: "")
+            if (!product.ingredients.isNullOrBlank()) {
+                Text(text = "Ingredients: ${product.ingredients}")
+            }
+            if (!product.servingSizeUnit.isNullOrBlank() && product.servingSize != null) {
+                Text(text = "Serving size: ${product.servingSize} ${product.servingSizeUnit}")
+            }
             Text(text = "Energy: ${product.energy}")
             Text(text = "Protein: ${product.protein}")
             Text(text = "Carbohydrate: ${product.carbohydrate}")
