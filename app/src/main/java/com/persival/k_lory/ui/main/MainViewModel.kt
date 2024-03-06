@@ -1,7 +1,6 @@
 package com.persival.k_lory.ui.main
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -11,47 +10,40 @@ import com.persival.k_lory.domain.food_facts.GetApiResponseFlowUseCase
 import com.persival.k_lory.domain.food_facts.GetFoodPropertiesUseCase
 import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
-// Annotates the ViewModel for dependency injection with Hilt.
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    // Injects the use case for getting food properties. Used to fetch food data based on search criteria.
     private val getFoodPropertiesUseCase: GetFoodPropertiesUseCase,
-    // Injects the use case to retrieve API response flow. Used for observing API response states.
     getApiResponseFlowUseCase: GetApiResponseFlowUseCase,
 ) : ViewModel() {
 
-    // Holds the API response flow, initiated by invoking the getApiResponseFlowUseCase.
-    val apiResponseFlow: StateFlow<FoodWrapper> = getApiResponseFlowUseCase.invoke()
+    private val _apiResponseFlow = getApiResponseFlowUseCase.invoke()
+    val apiResponseFlow: StateFlow<FoodWrapper> = _apiResponseFlow
 
-    // A mutable state holding the current search ingredient entered by the user. Initially empty.
     var searchIngredient: String by mutableStateOf("")
+        private set
 
-    // A mutable state list holding the list of food properties entities. Initially empty.
-    private var products = mutableStateListOf<FoodPropertiesEntity>()
+    private val _displayableProducts = MutableStateFlow<List<MainViewState>>(emptyList())
+    val displayableProducts: StateFlow<List<MainViewState>> = _displayableProducts
 
     init {
-        // Collects API response flow updates within the ViewModel scope.
+        observeApiResponseFlow()
+    }
+
+    private fun observeApiResponseFlow() {
         viewModelScope.launch {
-            apiResponseFlow.collect { foodWrapper ->
+            apiResponseFlow.collectLatest { foodWrapper ->
                 when (foodWrapper) {
-                    // On successful API response, clears the current products list and adds new ones.
-                    is FoodWrapper.Success -> {
-                        products.clear()
-                        products.addAll(foodWrapper.foodProperties)
-                    }
+                    is FoodWrapper.Success -> _displayableProducts.value =
+                        foodWrapper.foodProperties.map { it.toMainViewState() }
 
-                    // On receiving a 'NoResults' response, clears the products list.
-                    is FoodWrapper.NoResults -> {
-                        products.clear()
-                    }
-
-                    // Handles the 'Error' response. Currently no implementation.
-                    is FoodWrapper.Error -> {
-                    }
+                    is FoodWrapper.NoResults, is FoodWrapper.Error -> _displayableProducts.value = emptyList()
 
                     // Handles the 'Init' state. Currently no implementation.
                     is FoodWrapper.Init -> {
@@ -65,15 +57,30 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Function to initiate the API call through the use case with the current search ingredient.
     fun launchAPI() {
-        viewModelScope.launch {
-            getFoodPropertiesUseCase.invoke(searchIngredient)
+        if (searchIngredient.isNotBlank()) {
+            viewModelScope.launch {
+                getFoodPropertiesUseCase.invoke(searchIngredient)
+            }
         }
     }
 
-    // Updates the current search ingredient with the new text value.
     fun updateTextFieldValue(text: String) {
-        searchIngredient = text
+        searchIngredient = text.trim()
+    }
+
+    private fun FoodPropertiesEntity.toMainViewState() = MainViewState(
+        description = description?.capitalizeFully() ?: "",
+        ingredients = ingredients?.capitalizeFully() ?: "",
+        servingSizeUnit = servingSizeUnit ?: "",
+        servingSize = servingSize?.toString() ?: "",
+        energy = energy?.toString() ?: "N/A",
+        protein = protein?.toString() ?: "N/A",
+        carbohydrate = carbohydrate?.toString() ?: "N/A",
+        fat = fat?.toString() ?: "N/A",
+    )
+
+    private fun String.capitalizeFully(): String = split(" ").joinToString(" ") {
+        it.lowercase(Locale.getDefault()).replaceFirstChar { char -> char.titlecase(Locale.getDefault()) }
     }
 }

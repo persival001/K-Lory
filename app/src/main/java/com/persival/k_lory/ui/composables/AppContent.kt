@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -29,12 +30,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.persival.k_lory.R
 import com.persival.k_lory.domain.food_facts.FoodWrapper
-import com.persival.k_lory.domain.food_facts.model.FoodPropertiesEntity
 import com.persival.k_lory.ui.main.MainViewModel
+import com.persival.k_lory.ui.main.MainViewState
 
 @Composable
 fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val manager = LocalFocusManager.current
+    val displayableProducts by viewModel.displayableProducts.collectAsState()
     val apiResponse by viewModel.apiResponseFlow.collectAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -57,7 +59,7 @@ fun AppContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
                 }
 
                 is FoodWrapper.Success -> {
-                    ProductsList(products = (apiResponse as FoodWrapper.Success).foodProperties)
+                    ProductsList(products = displayableProducts)
                 }
 
                 is FoodWrapper.NoResults -> {
@@ -107,11 +109,13 @@ fun SearchBar(value: String, onValueChange: (String) -> Unit, onSearch: () -> Un
 }
 
 @Composable
-fun ProductsList(products: List<FoodPropertiesEntity>) {
+fun ProductsList(products: List<MainViewState>) {
     LazyColumn {
-        items(products.size) { index ->
-            ProductCard(product = products[index])
+        items(products) { product ->
+            ProductCard(mainViewState = product)
         }
     }
 }
+
+
 
