@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">K-Lory</string>
     <string name="app_bar_title">K-Lory</string>
@@ -7,4 +8,10 @@
     <string name="error_message">Error</string>
     <string name="no_results">No results</string>
     <string name="no_results_check_internet">No results, check your internet connection</string>
+    <string name="ingredients">Ingrédients: %1$s</string>
+    <string name="serving_size">Taille de portion : %1$s %2$s</string>
+    <string name="energy">Energy: %1$s</string>
+    <string name="protein">Protein: %1$s</string>
+    <string name="carbohydrate">Carbohydrate: %1$s</string>
+    <string name="fat">Fat: %1$s</string>
 </resources>
