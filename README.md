@@ -1,48 +1,48 @@
-# K-Lory : Votre Compagnon de Nutrition (En cours de développement)
+# K-Lory: Your Nutrition Companion
 
-## À propos
-K-Lory est une application mobile conçue pour vous aider à mieux comprendre la composition nutritionnelle de vos aliments préférés. 
-Spécialisée dans la recherche rapide de produits alimentaires, K-Lory vous offre un accès instantané à des informations essentielles telles que le taux de calories, 
-les glucides, les lipides, et les protides de milliers de produits. 
-Que vous soyez en quête d'une alimentation équilibrée, que vous suiviez un régime spécifique ou que vous souhaitiez simplement en savoir plus sur ce que vous consommez, 
-K-Lory est l'outil parfait pour vous accompagner au quotidien.
+## About
+K-Lory is a free mobile application designed to help you better understand the nutritional composition of your favorite foods.
+Specializing in quickly finding food products, K-Lory gives you instant access to essential information such as calorie content,
+carbohydrates, lipids, and proteins from thousands of products.
+Whether you're looking for a balanced diet, following a specific diet, or simply want to know more about what you're eating,
+K-Lory is the perfect tool to accompany you on a daily basis.
 
-## Fonctionnalités
+## Features
 
-- **Recherche rapide** : Trouvez les informations nutritionnelles des produits alimentaires en un clic.
-- **Détails nutritionnels complets** : Accédez aux taux de calories, glucides, lipides, et protides pour une alimentation maîtrisée.
-- **Interface intuitive** : Profitez d'une expérience utilisateur fluide et agréable grâce à une conception ultra simple.
-- **Base de données riche** : Explorez une large base de données de produits alimentaires, constamment mise à jour.
+- **Quick search**: Find the nutritional information of food products in one click.
+- **Complete nutritional details**: Access the levels of calories, carbohydrates, lipids, and proteins for a controlled diet.
+- **Intuitive interface**: Enjoy a smooth and pleasant user experience thanks to an ultra-simple design.
+- **Rich database**: Explore a large, constantly updated database of food products.
 
-## Pourquoi K-Lory ?
+## Why K-Lory?
 
-K-Lory est née de la volonté de rendre accessible à tous une information nutritionnelle de qualité. 
-Dans un monde où l'alimentation occupe une place centrale dans notre santé et notre bien-être, 
-disposer d'informations précises sur ce que nous consommons est plus important que jamais. 
-K-Lory se propose d'être votre guide fiable et pratique pour une alimentation consciente et éclairée.
+K-Lory was born from the desire to make quality nutritional information accessible to all.
+In a world where food plays a central role in our health and well-being,
+Having accurate information about what we consume is more important than ever.
+K-Lory aims to be your reliable and practical guide to conscious and informed eating.
 
-## Technologies Utilisées
+## Technologies Used
 
-- **Kotlin** : Pour une performance et une sécurité de haut niveau dans le développement d'applications Android.
-- **MVVM (Model-View-ViewModel)** : Un modèle d'architecture qui assure une séparation claire entre la logique de présentation et la logique métier de l'application.
-- **Jetpack Compose** : Pour une interface utilisateur moderne et réactive, construite avec le dernier framework de conception UI de Google.
+- **Kotlin**: For high-level performance and security in Android application development.
+- **MVVM (Model-View-ViewModel)**: An architectural model that ensures a clear separation between the presentation logic and the business logic of the application.
+- **Jetpack Compose**: For a modern and responsive user interface, built with Google's latest UI design framework.
 
-## Commencer
+## To start
 
-Pour commencer à utiliser K-Lory, téléchargez l'application sur le Google Play Store (lien à venir). 
-Suivez les instructions d'installation et lancez-vous dans l'exploration des valeurs nutritionnelles des aliments de votre choix.
+To start using K-Lory, download the app from the Google Play Store (link coming soon).
+Follow the installation instructions and get started exploring the nutritional values of the foods of your choice.
 
 ## Contribution
 
-Votre feedback et vos contributions sont précieux pour améliorer K-Lory. 
-N'hésitez pas à ouvrir une issue ou à proposer une pull request si vous avez des suggestions d'amélioration ou de nouvelles fonctionnalités à proposer.
+Your feedback and contributions are valuable to improve K-Lory.
+Please feel free to open an issue or submit a pull request if you have suggestions for improvements or new features to propose.
 
 ## Licence
 
-K-Lory est distribué sous la licence MIT. 
-Voir le fichier `LICENSE` pour plus d'informations.
+K-Lory is distributed under the MIT License.
+See the `LICENSE` file for more information.
 
 ---
 
-Nous espérons que K-Lory vous aidera à prendre des décisions alimentaires éclairées et à profiter d'une vie plus saine et plus équilibrée. 
-Bienvenue dans la communauté K-Lory !
+We hope K-Lory will help you make informed dietary decisions and enjoy a healthier, more balanced life.
+Welcome to the K-Lory community!
