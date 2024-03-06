@@ -17,27 +17,34 @@ fun ProductCard(mainViewState: MainViewState) {
             .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier.padding(8.dp)
-        ) {
+        Column(modifier = Modifier.padding(8.dp)) {
             Text(text = mainViewState.description)
-            if (mainViewState.showIngredients) {
-                Text(text = "Ingrédients: ${mainViewState.ingredients}")
-            }
-            if (mainViewState.showServingSize) {
-                Text(text = "Serving size: ${mainViewState.servingSize} ${mainViewState.servingSizeUnit}")
-            }
-            if (mainViewState.showEnergy) {
-                Text(text = "Energy: ${mainViewState.energy}")
-            }
-            if (mainViewState.showProtein) {
-                Text(text = "Protein: ${mainViewState.protein}")
-            }
-            if (mainViewState.showCarbohydrate) {
-                Text(text = "Carbohydrate: ${mainViewState.carbohydrate}")
-            }
-            if (mainViewState.showFat) {
-                Text(text = "Fat: ${mainViewState.fat}")
+            if (mainViewState.showNutritionalInfo) {
+
+                if (mainViewState.showIngredients) {
+                    Text(text = "Ingrédients: ${mainViewState.ingredients}")
+                }
+
+                if (mainViewState.showServingSize) {
+                    Text(text = "Serving size: ${mainViewState.servingSize} ${mainViewState.servingSizeUnit}")
+                }
+
+                if (mainViewState.showEnergy) {
+                    Text(text = "Energy: ${mainViewState.energy}")
+                }
+
+                if (mainViewState.showProtein) {
+                    Text(text = "Protein: ${mainViewState.protein}")
+                }
+
+                if (mainViewState.showCarbohydrate) {
+                    Text(text = "Carbohydrate: ${mainViewState.carbohydrate}")
+                }
+
+                if (mainViewState.showFat) {
+                    Text(text = "Fat: ${mainViewState.fat}")
+                }
+
             }
         }
     }

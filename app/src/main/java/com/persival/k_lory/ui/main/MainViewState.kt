@@ -14,5 +14,7 @@ data class MainViewState(
     val showEnergy: Boolean = energy != "N/A",
     val showProtein: Boolean = protein != "N/A",
     val showCarbohydrate: Boolean = carbohydrate != "N/A",
-    val showFat: Boolean = fat != "N/A"
+    val showFat: Boolean = fat != "N/A",
+    val showNutritionalInfo: Boolean = listOf(energy, protein, carbohydrate, fat).any { it != "N/A" }
 )
+
