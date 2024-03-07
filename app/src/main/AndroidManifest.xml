@@ -19,6 +19,7 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.KLory">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
