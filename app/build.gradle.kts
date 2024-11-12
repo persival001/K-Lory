@@ -18,7 +18,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "FOOD_DATA_CENTRAL_API_KEY", "\"${project.findProperty("FOOD_DATA_CENTRAL_API_KEY")}\"")
+        val apiKey: String = project.findProperty("FOOD_DATA_CENTRAL_API_KEY")?.toString()
+            ?: throw IllegalStateException("Clé API non trouvée dans local.properties")
+
+
+        buildConfigField("String", "FOOD_DATA_CENTRAL_API_KEY", "\"$apiKey\"")
+
     }
     buildTypes {
         release {

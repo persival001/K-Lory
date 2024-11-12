@@ -11,14 +11,13 @@ import javax.inject.Singleton
 
 @Singleton
 class FoodDataCentralRepositoryImpl @Inject constructor(
+    private val foodDataCentralApi: FoodDataCentralApi,
     private val productResponseMapper: ProductResponseMapper,
     private val coroutineDispatchers: CoroutineDispatchers,
 ) : FoodDataCentralRepository {
 
-    private val foodDataCentralApi: FoodDataCentralApi = NetworkModule.createFoodDataCentralApi()
-
     private val _foodWrapperStateFlow = MutableStateFlow<FoodWrapper>(FoodWrapper.Init)
-    val foodWrapperStateFlow: StateFlow<FoodWrapper> = _foodWrapperStateFlow
+    private val foodWrapperStateFlow: StateFlow<FoodWrapper> = _foodWrapperStateFlow
 
     override suspend fun searchProducts(searchTerm: String) = withContext(coroutineDispatchers.io) {
         _foodWrapperStateFlow.value = FoodWrapper.Loading
@@ -52,5 +51,3 @@ class FoodDataCentralRepositoryImpl @Inject constructor(
         return foodWrapperStateFlow
     }
 }
-
-
