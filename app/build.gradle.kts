@@ -1,9 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
+
+fun getLocalProperty(key: String): String? = localProperties.getProperty(key)
 
 android {
     namespace = "com.persival.k_lory"
@@ -18,9 +30,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        val apiKey: String = project.findProperty("FOOD_DATA_CENTRAL_API_KEY")?.toString()
+        // Utilise getLocalProperty pour charger la clé API
+        val apiKey = getLocalProperty("FOOD_DATA_CENTRAL_API_KEY")
             ?: throw IllegalStateException("Clé API non trouvée dans local.properties")
-
 
         buildConfigField("String", "FOOD_DATA_CENTRAL_API_KEY", "\"$apiKey\"")
 
